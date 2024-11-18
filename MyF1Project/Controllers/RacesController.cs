@@ -22,12 +22,21 @@ namespace MyF1Project.Controllers
         }
 
         [HttpGet(Name = "GetRaces")]
-        public async Task<RestDTO<Race[]>> Get()
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
+        public async Task<RestDTO<Race[]>> Get(
+            int pageIndex = 0,
+            int pageSize = 10)
         {
-            var query = _context.Races;
+            var query = _context.Races
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                ;
             return new RestDTO<Race[]>()
             {
                 Data = await query.ToArrayAsync(),
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                RecordCount = await _context.Races.CountAsync(),
                 Links = new List<LinkDTO>
                 {
                     new LinkDTO(

@@ -19,6 +19,6 @@ namespace MyF1Project
 
         public DbSet<Driver> Drivers => Set<Driver>();
         public DbSet<Race> Races => Set<Race>();
-        public DbSet<Laptime> laptimes => Set<Laptime>();
+        public DbSet<Laptime> Laptimes => Set<Laptime>();
     }
 }

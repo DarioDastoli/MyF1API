@@ -6,7 +6,7 @@ namespace MyF1Project.Models
     public class Driver
     {
         public int Id { get; set; }
-        public int DriverRef { get; set; }
+        public string DriverRef { get; set; }
         public int Number { get; set; }
         public string Code{ get; set; }
         public string Forename { get; set; }

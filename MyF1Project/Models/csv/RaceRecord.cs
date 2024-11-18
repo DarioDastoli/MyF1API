@@ -4,7 +4,6 @@ namespace MyF1Project.Models.csv
 {
     public class RaceRecord
     {
-        //,,,,,,,,,,,,,,
         [Name("raceId")]
         public int? Id { get; set; }
         [Name("year")]
@@ -12,7 +11,7 @@ namespace MyF1Project.Models.csv
         [Name("round")]
         public int? Round { get; set; }
         [Name("circuitId")]
-        public int? CircuitId { get; set; }
+        public int? circuitId { get; set; }
         [Name("name")]
         public string? name { get; set; }
         [Name("date")]
@@ -20,7 +19,7 @@ namespace MyF1Project.Models.csv
         [Name("time")]
         public string? Time { get; set; }
         [Name("url")]
-        public string? Url { get; set; }
+        public string? url { get; set; }
         [Name("fp1_date")]
         public string? Fp1Date { get; set; }
         [Name("fp1_time")]
