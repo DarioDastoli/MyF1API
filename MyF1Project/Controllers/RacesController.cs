@@ -27,27 +27,23 @@ namespace MyF1Project.Controllers
         [HttpGet(Name = "GetRaces")]
         [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
         public async Task<RestDTO<Race[]>> Get(
-            int pageIndex = 0,
-            [Range(1, 100)] int pageSize = 10,
-            [SortColumnValidator(typeof(Race))]string? sortColumn = "Id",
-            [RegularExpression("ASC|DESC")] string? sortOrder = "ASC",
-            string? filterQuery = null)
+            [FromQuery] RequestDTO input)
         {
             var query = _context.Races.AsQueryable();
-            if(!string.IsNullOrEmpty(filterQuery))
-                query = query.Where(r => r.Id.Equals(Int32.Parse(filterQuery)));
+            if(!string.IsNullOrEmpty(input.FilterQuery))
+                query = query.Where(r => r.Id.Equals(Int32.Parse(input.FilterQuery)));
 
             query = query
-                .OrderBy($"{sortColumn} {sortOrder}")
-                .Skip(pageIndex * pageSize)
-                .Take(pageSize);
+                .OrderBy($"{input.SortColumn} {input.SortOrder}")
+                .Skip(input.PageIndex * input.PageSize)
+                .Take(input.PageSize);
 
 
             return new RestDTO<Race[]>()
             {
                 Data = await query.ToArrayAsync(),
-                PageIndex = pageIndex,
-                PageSize = pageSize,
+                PageIndex = input.PageIndex,
+                PageSize = input.PageSize,
                 RecordCount = await _context.Races.CountAsync(),
                 Links = new List<LinkDTO>
                 {
@@ -55,7 +51,7 @@ namespace MyF1Project.Controllers
                         Url.Action(
                             null, 
                             "Races",
-                            new{ pageIndex, pageSize}, 
+                            new{ input.PageIndex, input.PageSize}, 
                             Request.Scheme)!,
                         "self",
                         "GET"),
